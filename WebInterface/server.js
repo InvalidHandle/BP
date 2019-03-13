@@ -25,7 +25,8 @@ var led1=gpio.export(12,{
 });
 
 function lampje(led){
-    if(led==1){
+    console.log(led);
+    if(led=="1"){
         led1.set(1);
         led2.set(0);
     }else{

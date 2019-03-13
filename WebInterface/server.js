@@ -16,16 +16,17 @@ io.on('connection',function(socket){
     })
 })
 
-var led1=gpio.export(12,{
+var led1=gpio.export(17,{
     direction:gpio.DIRECTION.OUT,
     interval:200
-});var led2=gpio.export(16,{
+});var led2=gpio.export(27,{
     direction:gpio.DIRECTION.OUT,
     interval:200
 });
 
 function lampje(led){
-    console.log(led);
+    console.log(led==1);
+    console.log(led=="1");
     if(led=="1"){
         led1.set(1);
         led2.set(0);

@@ -37,6 +37,7 @@ btn1.on("change",function(){
         });
 
 function lampje(led){
+    console.log("btn"+led);
     io.emit('btnpress',led);
     if(led=="1"){
         led1.set(1);

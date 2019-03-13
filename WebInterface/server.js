@@ -23,10 +23,21 @@ var led1=gpio.export(17,{
     direction:gpio.DIRECTION.OUT,
     interval:200
 });
+var btn1=gpio.export(21,{
+    direction:gpio.DIRECTION.IN,
+    interval:200
+});var btn2=gpio.export(20,{
+    direction:gpio.DIRECTION.IN,
+    interval:200
+});
+btn1.on("change",function(){
+    lampje(1);
+    });btn2.on("change",function(){
+        lampje(2);
+        });
 
 function lampje(led){
-    console.log(led==1);
-    console.log(led=="1");
+    io.emit('btnpress',led);
     if(led=="1"){
         led1.set(1);
         led2.set(0);
@@ -34,6 +45,5 @@ function lampje(led){
         led1.set(0);
         led2.set(1);
     }
-    console.log(led);
 }
 app.use("/", express.static('static'));

@@ -12,24 +12,25 @@ io.on('connection',function(socket){
     console.log('Connected');
     socket.on('msg', function(msg){
         console.log(msg);
+        lampje(msg);
     })
 })
 
-var gpio17=gpio.export(17,{
+var led1=gpio.export(12,{
     direction:gpio.DIRECTION.OUT,
     interval:200
-});var gpio27=gpio.export(27,{
+});var led2=gpio.export(16,{
     direction:gpio.DIRECTION.OUT,
     interval:200
 });
 
 function lampje(led){
     if(led==1){
-        gpio17.set(1);
-        gpio27.set(0);
+        led1.set(1);
+        led2.set(0);
     }else{
-        gpio17.set(0);
-        gpio27.set(1);
+        led1.set(0);
+        led2.set(1);
     }
     console.log(led);
 }

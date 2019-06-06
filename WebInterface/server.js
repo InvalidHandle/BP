@@ -2,49 +2,155 @@ const express=require('express')
 const app = express()
 const port = 3000
 
-var http=require('http').Server(app);
+// var http=require('http').Server(app);
 
 var gpio=require("gpio");
-var server=app.listen(port);
-var io=require('socket.io').listen(server);
+// var server=app.listen(port);
+// var io=require('socket.io').listen(server);
 
-io.on('connection',function(socket){
-    console.log('Connected');
-    socket.on('msg', function(msg){
-        console.log(msg);
-        lampje(msg);
-    })
-})
+// io.on('connection',function(socket){
+//     console.log('Connected');
+//     socket.on('msg', function(msg){
+//         console.log(msg);
+//         lampje(msg);
+//     })
+// })
 
-var led1=gpio.export(17,{
-    direction:gpio.DIRECTION.OUT,
-    interval:200
-});var led2=gpio.export(27,{
+// var led1=gpio.export(17,{
+//     direction:gpio.DIRECTION.OUT,
+//     interval:200
+// });var led2=gpio.export(27,{
+//     direction:gpio.DIRECTION.OUT,
+//     interval:200
+// });
+// var btn1=gpio.export(21,{
+//     direction:gpio.DIRECTION.IN,
+//     interval:200
+// });var btn2=gpio.export(20,{
+//     direction:gpio.DIRECTION.IN,
+//     interval:200
+// });
+
+// btn1.on("change",function(){
+//     lampje(1);
+//     });btn2.on("change",function(){
+//         lampje(2);
+//         });
+
+// function lampje(led){
+//     console.log("btn"+led);
+//     io.emit('btnpress',led);
+//     if(led=="1"){
+//         led1.set(1);
+//         led2.set(0);
+//     }else{
+//         led1.set(0);
+//         led2.set(1);
+//     }
+
+// }
+
+var ws281x = require('rpi-ws281x-native');
+/*
+LEDS 1-9:
+2 3 4 17 27 22 10 9 11 
+
+
+Buttons 1-4:
+ 6 13 19 26
+*/ 
+var GPIOPINS= {
+    led1ch:ws281x(4, {dma:10,freq:800000, gpio:2,invert:false,brightness:255,stripType: ws281x.stripType.WS2812}),
+    led2ch:ws281x(4, {dma:10,freq:800000, gpio:3,invert:false,brightness:255,stripType: ws281x.stripType.WS2812}),
+    led3ch:ws281x(4, {dma:10,freq:800000, gpio:4,invert:false,brightness:255,stripType: ws281x.stripType.WS2812}),
+    led4ch:ws281x(4, {dma:10,freq:800000, gpio:17,invert:false,brightness:255,stripType: ws281x.stripType.WS2812}),
+    led5ch:ws281x(4, {dma:10,freq:800000, gpio:27,invert:false,brightness:255,stripType: ws281x.stripType.WS2812}),
+    led6ch:ws281x(4, {dma:10,freq:800000, gpio:22,invert:false,brightness:255,stripType: ws281x.stripType.WS2812}),
+    led7ch:ws281x(4, {dma:10,freq:800000, gpio:10,invert:false,brightness:255,stripType: ws281x.stripType.WS2812}),
+    led8ch:ws281x(4, {dma:10,freq:800000, gpio:9,invert:false,brightness:255,stripType: ws281x.stripType.WS2812}),
+    led9ch:ws281x(4, {dma:10,freq:800000, gpio:11,invert:false,brightness:255,stripType: ws281x.stripType.WS2812}),
+    btn1:gpio.export(6, {direction:gpio.DIRECTION.IN, interval:200}),
+    btn2:gpio.export(13, {direction:gpio.DIRECTION.IN, interval:200}), 
+    btn3:gpio.export(19, {direction:gpio.DIRECTION.IN, interval:200}),
+    btn4:gpio.export(26, {direction:gpio.DIRECTION.IN, interval:200})
+}
+GPIOPINS.btn1.on("change",DisplayFunctions.LightLed(1));
+GPIOPINS.btn2.on("change",DisplayFunctions.LightLed(2));
+GPIOPINS.btn3.on("change",DisplayFunctions.LightLed(3));
+GPIOPINS.btn4.on("change",DisplayFunctions.LightLed(4));
+var DisplayFunctions=new function(){
+    this.LedStates={
+        "compressor":{
+            0:"#0000FF",
+            1:"#0000FF",
+            2:"#FFFFFF",
+            3:"#FFFFFF",
+            4:"#FFFFFF",
+            5:"#FFFFFF",
+            6:"#FFFFFF",
+            7:"#FFFFFF",
+            8:"#FFFFFF",
+            9:"#FFFFFF"
+        },
+        "verbrandingskamer":{
+            0:"#FFFFFF",
+            1:"#FFFFFF",
+            2:"#f4b042",
+            3:"#f4b042",
+            4:"#FF0000",
+            5:"#FF0000",
+            6:"#FFFFFF",
+            7:"#FFFFFF",
+            8:"#FFFFFF",
+            9:"#FFFFFF"
+        },
+        "uitlaat":{
+            0:"#FFFFFF",
+            1:"#FFFFFF",
+            2:"#FFFFFF",
+            3:"#FFFFFF",
+            4:"#FFFFFF",
+            5:"#FFFFFF",
+            6:"#FFFFFF",
+            7:"#FFFFFF",
+            8:"#FFFFFF",
+            9:"#FFFFFF"
+        },
+        "inactive":{
+            0:"#FFFFFF",
+            1:"#FFFFFF",
+            2:"#FFFFFF",
+            3:"#FFFFFF",
+            4:"#FFFFFF",
+            5:"#FFFFFF",
+            6:"#FFFFFF",
+            7:"#FF0000",
+            8:"#FF0000",
+            9:"#FF0000"
+        }
+    }
+    this.ShowPart=function(part){
+        var LedState=DisplayFunctions.LedStates[part];
+        for(var LedStrip in Object.keys(LedState)){
+            console.log(GPIOPINS["led"+LedStrip+"ch"], DisplayFunctions.LedStates[LedStrip]);
+            DisplayFunctions.LightLed(GPIOPINS["led"+LedStrip+"ch"], DisplayFunctions.LedStates[LedStrip]);
+        }
+    }
+    this.LightLed=function(led,color){
+        var colors=led.array;
+        for(let i=0;i<led.count;i++){
+            colors[i]=color;
+        }
+    }
+};
+
+var StepperFunctions=new function(){
+    this.Rotate=function(delay){
+        gpio.export(17,{
     direction:gpio.DIRECTION.OUT,
     interval:200
 });
-var btn1=gpio.export(21,{
-    direction:gpio.DIRECTION.IN,
-    interval:200
-});var btn2=gpio.export(20,{
-    direction:gpio.DIRECTION.IN,
-    interval:200
-});
-btn1.on("change",function(){
-    lampje(1);
-    });btn2.on("change",function(){
-        lampje(2);
-        });
-
-function lampje(led){
-    console.log("btn"+led);
-    io.emit('btnpress',led);
-    if(led=="1"){
-        led1.set(1);
-        led2.set(0);
-    }else{
-        led1.set(0);
-        led2.set(1);
     }
 }
+
 app.use("/", express.static('static'));

@@ -2,5 +2,9 @@
 <input type='button' value='Lampje 1' onclick='Lampje(1)'/>
 <input type='button' value='Lampje 2' onclick='Lampje(2)'/>
 <span id="lampje"></span>
+<br/>
+<canvas id="schematiccanvas" width="640" height="480" style="cursor:crosshair" data-imgsrc="mainschematic.png" onmousedown="point_it(event)" oncontextmenu="return false;">
+    Your browser does not support the HTML5 canvas tag.
+</canvas>
+<img id="schematicimg" src="mainschematic.png"/>
 <script src="controller.js"></script>
-<img id="fototje"/>

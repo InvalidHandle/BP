@@ -59,18 +59,18 @@ LEDS 1-9:
 Buttons 1-4:
  6 13 19 26
 */ 
-const channels = ws281x.init({
+const channels = ws281x.init(5,{
     dma: 10,
     freq: 800000,
-    channels: [ {count:4, gpio:2,invert:false,brightness:255,stripType: 'ws2812'},
-      {count:4, gpio:3,invert:false,brightness:255,stripType: 'ws2812'},
-      {count:4, gpio:4,invert:false,brightness:255,stripType: 'ws2812'},
-      {count:4, gpio:17,invert:false,brightness:255,stripType: 'ws2812'},
-      {count:4, gpio:27,invert:false,brightness:255,stripType: 'ws2812'},
-      {count:4, gpio:22,invert:false,brightness:255,stripType: 'ws2812'},
-      {count:4, gpio:10,invert:false,brightness:255,stripType: 'ws2812'},
-      {count:4, gpio:9,invert:false,brightness:255,stripType: 'ws2812'},
-      {count:4, gpio:11,invert:false,brightness:255,stripType: 'ws2812'}
+    channels: [ { gpio:2,invert:false,brightness:255,stripType: 'ws2812'},
+      { gpio:3,invert:false,brightness:255,stripType: 'ws2812'},
+      { gpio:4,invert:false,brightness:255,stripType: 'ws2812'},
+      { gpio:17,invert:false,brightness:255,stripType: 'ws2812'},
+      { gpio:27,invert:false,brightness:255,stripType: 'ws2812'},
+      { gpio:22,invert:false,brightness:255,stripType: 'ws2812'},
+      { gpio:10,invert:false,brightness:255,stripType: 'ws2812'},
+      { gpio:9,invert:false,brightness:255,stripType: 'ws2812'},
+      { gpio:11,invert:false,brightness:255,stripType: 'ws2812'}
     
     ]
 

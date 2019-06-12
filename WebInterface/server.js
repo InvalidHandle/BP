@@ -166,7 +166,9 @@ const rl = readline.createInterface({
     output: process.stdout
   });
   rl.question((answer)=>{
+      console.log(answer);
     DisplayFunctions.LightLed(answer);
+    rl.close();
   });
 
 

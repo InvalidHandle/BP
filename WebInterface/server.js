@@ -79,10 +79,10 @@ const channels = ws281x.init(5,{
 
 
 var GPIOPINS= {
-    btn1:gpio.export(6, {direction:gpio.DIRECTION.IN, interval:200}),
-    btn2:gpio.export(13, {direction:gpio.DIRECTION.IN, interval:200}), 
-    btn3:gpio.export(19, {direction:gpio.DIRECTION.IN, interval:200}),
-    btn4:gpio.export(26, {direction:gpio.DIRECTION.IN, interval:200})
+    btn1:gpio.export(21, {direction:gpio.DIRECTION.IN, interval:200}),
+    btn2:gpio.export(20, {direction:gpio.DIRECTION.IN, interval:200}), 
+    btn3:gpio.export(16, {direction:gpio.DIRECTION.IN, interval:200}),
+    btn4:gpio.export(12, {direction:gpio.DIRECTION.IN, interval:200})
 }
 var DisplayFunctions={
     LedStates:{

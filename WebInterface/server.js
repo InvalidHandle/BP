@@ -136,6 +136,7 @@ var DisplayFunctions={
         }
     },
     ShowPart:function(part){
+        Console.log("Showpart");
         var LedState=DisplayFunctions.LedStates[part];
         for(var LedStrip in Object.keys(LedState)){
             console.log(LedStrip, DisplayFunctions.LedStates[LedStrip]);
@@ -143,6 +144,7 @@ var DisplayFunctions={
         }
     },
     LightLed:function(led,color){
+        Console.log("LightLed");
         var colors=led.array;
         for(let i=0;i<led.count;i++){
             colors[i]=color;

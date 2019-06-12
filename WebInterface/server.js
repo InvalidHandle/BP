@@ -143,7 +143,9 @@ var DisplayFunctions={
         for(let i=0;i<led.count;i++){
             colors[i]=color;
         }
+        console.log("Led:");
         console.log(led);
+        console.log("Color:");        
         console.log(colors);
     }
 };

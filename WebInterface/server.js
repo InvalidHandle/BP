@@ -59,16 +59,26 @@ LEDS 1-9:
 Buttons 1-4:
  6 13 19 26
 */ 
+const channels = ws281x.init({
+    dma: 10,
+    freq: 800000,
+    channels: [ {count:4, gpio:2,invert:false,brightness:255,stripType: 'ws2812'},
+      {count:4, gpio:3,invert:false,brightness:255,stripType: 'ws2812'},
+      {count:4, gpio:4,invert:false,brightness:255,stripType: 'ws2812'},
+      {count:4, gpio:17,invert:false,brightness:255,stripType: 'ws2812'},
+      {count:4, gpio:27,invert:false,brightness:255,stripType: 'ws2812'},
+      {count:4, gpio:22,invert:false,brightness:255,stripType: 'ws2812'},
+      {count:4, gpio:10,invert:false,brightness:255,stripType: 'ws2812'},
+      {count:4, gpio:9,invert:false,brightness:255,stripType: 'ws2812'},
+      {count:4, gpio:11,invert:false,brightness:255,stripType: 'ws2812'}
+    
+    ]
+
+  });
+
+
+
 var GPIOPINS= {
-    led1ch:ws281x(4, {dma:10,freq:800000, gpio:2,invert:false,brightness:255,stripType: 'ws2812'}),
-    led2ch:ws281x(4, {dma:10,freq:800000, gpio:3,invert:false,brightness:255,stripType: 'ws2812'}),
-    led3ch:ws281x(4, {dma:10,freq:800000, gpio:4,invert:false,brightness:255,stripType: 'ws2812'}),
-    led4ch:ws281x(4, {dma:10,freq:800000, gpio:17,invert:false,brightness:255,stripType: 'ws2812'}),
-    led5ch:ws281x(4, {dma:10,freq:800000, gpio:27,invert:false,brightness:255,stripType: 'ws2812'}),
-    led6ch:ws281x(4, {dma:10,freq:800000, gpio:22,invert:false,brightness:255,stripType: 'ws2812'}),
-    led7ch:ws281x(4, {dma:10,freq:800000, gpio:10,invert:false,brightness:255,stripType: 'ws2812'}),
-    led8ch:ws281x(4, {dma:10,freq:800000, gpio:9,invert:false,brightness:255,stripType: 'ws2812'}),
-    led9ch:ws281x(4, {dma:10,freq:800000, gpio:11,invert:false,brightness:255,stripType: 'ws2812'}),
     btn1:gpio.export(6, {direction:gpio.DIRECTION.IN, interval:200}),
     btn2:gpio.export(13, {direction:gpio.DIRECTION.IN, interval:200}), 
     btn3:gpio.export(19, {direction:gpio.DIRECTION.IN, interval:200}),
@@ -132,7 +142,7 @@ var DisplayFunctions=new function(){
     this.ShowPart=function(part){
         var LedState=DisplayFunctions.LedStates[part];
         for(var LedStrip in Object.keys(LedState)){
-            console.log(GPIOPINS["led"+LedStrip+"ch"], DisplayFunctions.LedStates[LedStrip]);
+            console.log(LedStrip, DisplayFunctions.LedStates[LedStrip]);
             DisplayFunctions.LightLed(GPIOPINS["led"+LedStrip+"ch"], DisplayFunctions.LedStates[LedStrip]);
         }
     }

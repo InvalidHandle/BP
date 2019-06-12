@@ -84,10 +84,6 @@ var GPIOPINS= {
     btn3:gpio.export(19, {direction:gpio.DIRECTION.IN, interval:200}),
     btn4:gpio.export(26, {direction:gpio.DIRECTION.IN, interval:200})
 }
-GPIOPINS.btn1.on("change",DisplayFunctions.LightLed.bind(1));
-GPIOPINS.btn2.on("change",DisplayFunctions.LightLed.bind(2));
-GPIOPINS.btn3.on("change",DisplayFunctions.LightLed.bind(3));
-GPIOPINS.btn4.on("change",DisplayFunctions.LightLed.bind(4));
 var DisplayFunctions={
     LedStates:{
         "compressor":{
@@ -162,5 +158,9 @@ var StepperFunctions={
 });
     }
 }
+GPIOPINS.btn1.on("change",DisplayFunctions.LightLed.bind(1));
+GPIOPINS.btn2.on("change",DisplayFunctions.LightLed.bind(2));
+GPIOPINS.btn3.on("change",DisplayFunctions.LightLed.bind(3));
+GPIOPINS.btn4.on("change",DisplayFunctions.LightLed.bind(4));
 
 app.use("/", express.static('static'));

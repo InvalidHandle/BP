@@ -51,6 +51,8 @@ var gpio=require("gpio");
 // }
 
 var ws281x = require('rpi-ws281x-native');
+const readline = require('readline');
+
 /*
 LEDS 1-9:
 2 3 4 17 27 22 10 9 11 
@@ -135,20 +137,14 @@ var DisplayFunctions={
             9:"#FF0000"
         }
     },
-    ShowPart:function(part){
-        console.log("Showpart");
-        var LedState=DisplayFunctions.LedStates[part];
-        for(var LedStrip in Object.keys(LedState)){
-            console.log(LedStrip, DisplayFunctions.LedStates[LedStrip]);
-            DisplayFunctions.LightLed(GPIOPINS["led"+LedStrip+"ch"], DisplayFunctions.LedStates[LedStrip]);
-        }
-    },
     LightLed:function(led,color){
         console.log("LightLed");
         var colors=led.array;
         for(let i=0;i<led.count;i++){
             colors[i]=color;
         }
+        console.log(led);
+        console.log(colors);
     }
 };
 
@@ -164,5 +160,14 @@ GPIOPINS.btn1.on("change",DisplayFunctions.LightLed.bind(1));
 GPIOPINS.btn2.on("change",DisplayFunctions.LightLed.bind(2));
 GPIOPINS.btn3.on("change",DisplayFunctions.LightLed.bind(3));
 GPIOPINS.btn4.on("change",DisplayFunctions.LightLed.bind(4));
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  rl.question((answer)=>{
+    DisplayFunctions.LightLed(answer);
+  });
+
 
 app.use("/", express.static('static'));

@@ -89,7 +89,7 @@ GPIOPINS.btn2.on("change",DisplayFunctions.LightLed(2));
 GPIOPINS.btn3.on("change",DisplayFunctions.LightLed(3));
 GPIOPINS.btn4.on("change",DisplayFunctions.LightLed(4));
 var DisplayFunctions={
-    LedStates={
+    LedStates:{
         "compressor":{
             0:"#0000FF",
             1:"#0000FF",
@@ -139,14 +139,14 @@ var DisplayFunctions={
             9:"#FF0000"
         }
     },
-    ShowPart=function(part){
+    ShowPart:function(part){
         var LedState=DisplayFunctions.LedStates[part];
         for(var LedStrip in Object.keys(LedState)){
             console.log(LedStrip, DisplayFunctions.LedStates[LedStrip]);
             DisplayFunctions.LightLed(GPIOPINS["led"+LedStrip+"ch"], DisplayFunctions.LedStates[LedStrip]);
         }
     },
-    LightLed=function(led,color){
+    LightLed:function(led,color){
         var colors=led.array;
         for(let i=0;i<led.count;i++){
             colors[i]=color;
@@ -154,8 +154,8 @@ var DisplayFunctions={
     }
 };
 
-var StepperFunctions=new function(){
-    this.Rotate=function(delay){
+var StepperFunctions={
+    Rotate:function(delay){
         gpio.export(17,{
     direction:gpio.DIRECTION.OUT,
     interval:200
